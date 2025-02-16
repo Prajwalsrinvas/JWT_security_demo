@@ -2,7 +2,9 @@
 
 The JWT Security Demo is an interactive Streamlit application that demonstrates best practices in JWT security, highlights common vulnerabilities, and simulates attack scenarios. It serves both as an educational tool for legitimate users and a sandbox for exploring attack techniques.
 
-![](img.png)
+[demo.webm](https://github.com/user-attachments/assets/4c760642-46bd-4665-9914-4a9d52f607ba)
+
+---
 
 ## Overview
 
