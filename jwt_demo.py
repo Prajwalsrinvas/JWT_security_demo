@@ -1,5 +1,6 @@
 import hashlib
 import itertools
+import math
 import secrets
 import string
 import time
@@ -24,6 +25,13 @@ class User:
         self.password_hash = password_hash
         self.failed_attempts = 0
         self.locked_until: Optional[datetime] = None
+
+
+# Assuming total_combinations is a very large number
+def to_exponential_notation(number):
+    exponent = math.floor(math.log10(number))
+    mantissa = number / 10**exponent
+    return f"{mantissa:.2f}e{exponent}"
 
 
 def init_session_state():
@@ -179,9 +187,11 @@ def brute_force_attack():
     total_combinations = len(ALLOWED_CHARS) ** secret_length
 
     st.info(
-        f"Starting brute force attack simulation\n"
-        f"Secret length: {secret_length} characters\n"
-        f"Total combinations to try: {total_combinations:,}"
+        f"""
+        - Starting brute force attack simulation
+        - Secret length: {secret_length} characters
+        - Total combinations to try: {total_combinations:,}
+        """
     )
 
     # Setup progress tracking
@@ -239,10 +249,12 @@ def brute_force_attack():
             st.session_state.brute_force_time = total_time
 
             status_text.success(
-                f"🎉 Secret found: '{guess_secret}'\n"
-                f"Time taken: {total_time:.2f} seconds\n"
-                f"Attempts: {combinations_tried:,}\n"
-                f"Speed: {combinations_tried/total_time:,.0f} attempts/second"
+                f"""
+                - 🎉 Secret found: '{guess_secret}'
+                - Time taken: {total_time:.2f} seconds
+                - Attempts: {combinations_tried:,}
+                - Speed: {combinations_tried/total_time:,.0f} attempts/second
+                """
             )
 
             # Show security insight
@@ -399,10 +411,19 @@ def main():
                         total_combinations = len(ALLOWED_CHARS) ** len(
                             st.session_state.jwt_secret
                         )
+                        # Format total_combinations and estimated time in the 10^x format
+                        formatted_combinations = to_exponential_notation(
+                            total_combinations
+                        )
+                        estimated_time = total_combinations / 1_000_000
+                        formatted_time = to_exponential_notation(estimated_time)
+
                         st.info(
-                            f"Secret length: {len(st.session_state.jwt_secret)} characters\n"
-                            f"Possible combinations: {total_combinations:,}\n"
-                            f"Estimated time at 1M attempts/second: {total_combinations/1000000:,.2f} seconds"
+                            f"""
+                            - Secret length: {len(st.session_state.jwt_secret)} characters.
+                            - Possible combinations: {formatted_combinations}
+                            - Estimated time at 1M attempts/second: {formatted_time} seconds
+                            """
                         )
         else:
             st.warning("Login first to access the hacking demonstration.")
