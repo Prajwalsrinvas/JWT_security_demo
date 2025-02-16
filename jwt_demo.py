@@ -245,11 +245,6 @@ def brute_force_attack():
                 f"Speed: {combinations_tried/total_time:,.0f} attempts/second"
             )
 
-            # Create metrics for the final result
-            metrics_col1, metrics_col2 = st.columns(2)
-            metrics_col1.metric("Final Attempts", f"{combinations_tried:,}")
-            metrics_col2.metric("Total Time", f"{total_time:.2f}s")
-
             # Show security insight
             if total_time < 1:
                 st.error(
